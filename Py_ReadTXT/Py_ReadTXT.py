@@ -3,7 +3,7 @@ import time
 import keyboard
 import chardet
 
-TXTPath = './Books/RLJS.txt'
+TXTPath = './Books/004.txt'
 #TXTPath = './Books/KSLSH1.txt'
 NotePath ='./BookNote.json'
 #自定错误
@@ -12,7 +12,7 @@ class UsualError(BaseException):
 class EncodingDetectError(BaseException):
     pass
 
-#对txt的编码格式进行识别
+#对txt的编码格式进行识别     
 def detect_encoding(text_file, min_confidence = 0.98, text_length = 1024):
     with open(text_file, 'rb') as text:
         result = chardet.detect(text.read(text_length))

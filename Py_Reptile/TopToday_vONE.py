@@ -25,7 +25,6 @@ def GetTop_UsingNode(topic_Name = "weibo",Link_Display = 0):
     Link_Display:链接显示
     '''
     Node = Select_module(topic_Name)
- 
     # 找到模块 例:微博node-1
     div = soup.find('div',id=Node)
     # 模块-名称
@@ -74,7 +73,7 @@ def Select_module(topic_Name):
 '''
     github  zhihu   ithome   sspai     
     
-    weibo   36ke    smzdm    52pojie
+    36ke    smzdm    52pojie    weibo
 '''
 if __name__=='__main__':
     while(1):
