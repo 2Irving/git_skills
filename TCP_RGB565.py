@@ -3,18 +3,21 @@ import socket
 from datetime import datetime
 LCD_WIDTH = 240
 LCD_LENGTH = 280
-server = ('192.168.101.97',3333)
+server = ('192.168.1.7',3333)
 
 def socket_cilent(ip):
     global client
     #实例化socket
-    # #TCP
+
+    #TCP
     # client = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-    #UDP
-    client = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
     # #连接客户端地址 ip=(port,host)
     # if(client.connect_ex(ip) == 0):
     #     print("connect to server",ip)
+
+    #UDP
+    client = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
+
 
 
 def resize_img(image,width,length):
@@ -43,12 +46,17 @@ if __name__=="__main__":
     #转字节传输
     img_bytestream= image_565.tobytes()
     print(type(img_bytestream),len(img_bytestream),"B")
-    #print(img_bytestream.hex())
 
     #TCP
-    #client.send(img_bytestream,server)
-    #UDP
-    client.sendto(b"2312",server)
+    # for i in range(0,int(len(img_bytestream)/1024)):
+    #     client.send(img_bytestream[i*1024:(i+1)*1024])
+    #     print(i*1024,(i+1)*1024)
 
+    # #UDP
+    for i in range(0,int(len(img_bytestream)/512)):
+        client.sendto(img_bytestream[i*512:(i+1)*512],server)
+        print(i*512,(i+1)*512)
+
+    client.sendto(b'end',server)
     # cv2.imshow("im",image)
     # cv2.waitKey()
