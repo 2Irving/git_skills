@@ -3,7 +3,7 @@ import socket
 from datetime import datetime
 LCD_WIDTH = 240
 LCD_LENGTH = 280
-server = ('192.168.1.7',3333)
+server = ('192.168.101.97',3333)
 
 def socket_cilent(ip):
     global client
@@ -53,9 +53,10 @@ if __name__=="__main__":
     #     print(i*1024,(i+1)*1024)
 
     # #UDP
-    for i in range(0,int(len(img_bytestream)/512)):
-        client.sendto(img_bytestream[i*512:(i+1)*512],server)
-        print(i*512,(i+1)*512)
+    for i in range(0,int(len(img_bytestream)/1024)):
+        client.sendto(i.to_bytes(),server)
+        client.sendto(img_bytestream[i*1024:(i+1)*1024],server)
+        print(i)
 
     client.sendto(b'end',server)
     # cv2.imshow("im",image)
