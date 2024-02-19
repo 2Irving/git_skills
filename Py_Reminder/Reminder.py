@@ -18,7 +18,7 @@ str_tiffany_green = color_hex(129,216,206)
 str_indiv_red = color_hex(215,50,50)
 
 
-
+# 托盘类
 class TrayModel(QSystemTrayIcon):
     def __init__(self, Window):
         super(TrayModel, self).__init__()
@@ -54,6 +54,7 @@ class TrayModel(QSystemTrayIcon):
     def app_click(self, reason):
         pass
 
+# 窗口类
 class Window(QWidget):
     def __init__(self):
         super().__init__()
@@ -67,7 +68,7 @@ class Window(QWidget):
         # 设置窗口 置顶，无边框，无状态栏 
         self.setWindowFlags(Qt.WindowStaysOnTopHint|Qt.FramelessWindowHint|Qt.Tool)
         # 设置窗口大小和位置
-        #self.setGeometry(850, 450)
+        # self.setGeometry(850, 450)
 
 
         # 创建文字标签

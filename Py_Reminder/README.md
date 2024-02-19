@@ -19,20 +19,14 @@ pip library :
  - PyQt5              5.15.9
 
 ## file
- - Reminder.py      code file
- - 1.png            app icon
- - build            exe build file
- - dist             exe
- - Reminder.spec    build file spec
-## User documentation
 
-## Resources
+    Reminder.py      code file
+    1.png            app icon
+    build            exe build file
+    dist             exe
+    Reminder.spec    build file spec
 
-## Articles
+## py 2 exe
 
-## Contact
-
-## Donate
-
-## Licence
+Pyinstaller -F -w -i logo.png Reminder.py
 
