@@ -8,8 +8,6 @@ so this focuses on:
 1. Remind you to get up at the hour and half an hour (red window, and text reminder)
 2. Remind you to sign in at the end of the day, you can customize the end of the day
 
-It does not require any _root_ access. It works on _Linux_, _Windows_ and _macOS_.
-
 
 ## Environment
 system(current) :
@@ -27,6 +25,6 @@ pip library :
     Reminder.spec    build file spec
 
 ## py 2 exe
-
+cd path cmd
 Pyinstaller -F -w -i logo.png Reminder.py
 
