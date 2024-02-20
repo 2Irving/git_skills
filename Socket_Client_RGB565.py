@@ -1,16 +1,13 @@
 import cv2
 import socket
-from datetime import datetime
-
+import zlib
 LCD_WIDTH = 240
 LCD_LENGTH = 280
-SOCKET_MODE = 'UDP'
+SOCKET_MODE = 'TCP'
 server = ('192.168.101.183',3333)
 
 def socket_cilent(ip):
     global client
-    #实例化socket
-
     #TCP
     if SOCKET_MODE == 'TCP':
         client = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
@@ -44,40 +41,38 @@ if __name__=="__main__":
     image_length = image.shape[1]
     image_dimension = image.shape[2]
 
+    #图像缩放并且转为rgb565的图像矩阵
     image = resize_img(image,image_width,image_length)
     image_565 = toarray_rgb565(image)
+
     #转字节传输
-    img_bytestream= image_565.tobytes()
-    print(type(img_bytestream),len(img_bytestream),"B")
+    img_bytestream = image_565.tobytes()
+    print("bytestream:",type(img_bytestream),len(img_bytestream),"B")
+
+    #压缩字节流，减小开销，到接收端再解压
+    compress_bytestream = zlib.compress(img_bytestream)
+    print("compress_bytestream:",type(compress_bytestream),len(compress_bytestream),"B")
 
     #TCP
+    #面向连接的，可靠的，点对点，字节流传输，自有阻塞机制
     if SOCKET_MODE == 'TCP':
-        client.sendto(b'start',server)
-
-        for i in range(0,int(len(img_bytestream)/1024)):
-            client.send(img_bytestream[i*1024:(i+1)*1024])
-            print("pack",i*1024,(i+1)*1024)
-            #阻塞式 等待服务器接收成功再发送
-            while(1):
-                if client.recvfrom(1024):
-                    break
-
-        client.send(b'end')
+        client.send(compress_bytestream)
+        client.send(b'end') #截止符
 
     #UDP
+    #无连接的，不可靠的，多对多，数据报文传输，不带阻塞机制，自己实现
     if SOCKET_MODE == 'UDP':
         client.sendto(b'start',server)
 
-        for i in range(0,int(len(img_bytestream)/1024)):
-            client.sendto(img_bytestream[i*1024:(i+1)*1024],server)
+        for i in range(0,int(len(compress_bytestream)/1024)):
+            client.sendto(compress_bytestream[i*1024:(i+1)*1024],server) #UDP需要自己拆包
             print("pack",i*1024,(i+1)*1024)
-            client.sendto(img_bytestream,server)
-            #阻塞式 等待服务器接收成功再发送
+            #阻塞 等待接收端成功再发送
             while(1):
                 if client.recvfrom(1024):
                     break
 
-        client.sendto(b'end',server)
+        client.sendto(b'end',server) #截止符
 
     
 
