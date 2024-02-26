@@ -3,7 +3,7 @@ import socket
 import zlib
 LCD_WIDTH = 240
 LCD_LENGTH = 280
-SOCKET_MODE = 'TCP'
+SOCKET_MODE = 'UDP'
 server = ('192.168.101.183',3333)
 
 def socket_cilent(ip):
@@ -56,9 +56,9 @@ if __name__=="__main__":
     #TCP
     #面向连接的，可靠的，点对点，字节流传输，自有阻塞机制
     if SOCKET_MODE == 'TCP':
+        client.send(b'start')
         client.send(compress_bytestream)
         client.send(b'end') #截止符
-
     #UDP
     #无连接的，不可靠的，多对多，数据报文传输，不带阻塞机制，自己实现
     if SOCKET_MODE == 'UDP':
@@ -74,7 +74,7 @@ if __name__=="__main__":
 
         client.sendto(b'end',server) #截止符
 
-    
+
 
     cv2.imshow("im",image)
     cv2.waitKey()
